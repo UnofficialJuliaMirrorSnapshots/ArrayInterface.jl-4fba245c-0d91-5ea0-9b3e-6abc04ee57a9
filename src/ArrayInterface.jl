@@ -12,10 +12,9 @@ function ismutable end
 Query whether a type is mutable or not, see
 https://github.com/JuliaDiffEq/RecursiveArrayTools.jl/issues/19.
 """
-Base.@pure ismutable(x::DataType) = x.mutable
 ismutable(x) = ismutable(typeof(x))
 
-ismutable(::Type{<:Array}) = true
+ismutable(::Type{<:AbstractArray}) = true
 ismutable(::Type{<:Number}) = false
 
 # Piracy
@@ -50,6 +49,8 @@ Query whether an array type has fast scalar indexing
 """
 fast_scalar_indexing(x) = true
 fast_scalar_indexing(x::AbstractArray) = fast_scalar_indexing(typeof(x))
+fast_scalar_indexing(::Type{<:LinearAlgebra.AbstractQ}) = false
+fast_scalar_indexing(::Type{<:LinearAlgebra.LQPackedQ}) = false
 
 """
     allowed_getindex(x,i...)
